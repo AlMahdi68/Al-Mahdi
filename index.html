@@ -2,27 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Al Mahdi — Dashboard</title>
-  <link rel="stylesheet" href="./assets/style.css" />
-  <script type="module" src="./assets/dashboard.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Al Mahdi - Automated AI Social Monetization</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0; padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #111;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    .container {
+      max-width: 480px;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.2rem;
+      color: limegreen;
+      font-weight: 900;
+    }
+    p.tagline {
+      font-size: 1.25rem;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      color: #bbb;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2.5rem;
+      margin: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 2px solid limegreen;
+      background: transparent;
+      color: limegreen;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      text-decoration: none;
+      user-select: none;
+    }
+    .btn:hover {
+      background-color: limegreen;
+      color: #111;
+    }
+    footer {
+      position: fixed;
+      bottom: 1rem;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #444;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="app-wrapper">
-    <header class="navbar">
-      <h1>Al Mahdi</h1>
-      <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="content.html">Content</a>
-        <a href="analytics.html">Analytics</a>
-        <a href="settings.html">Settings</a>
-        <a href="logout.html">Logout</a>
-      </nav>
-    </header>
+  <div class="container" role="main">
+    <h1>Al Mahdi</h1>
+    <p class="tagline">Automated AI-Powered Social Media Monetization Platform</p>
 
-    <main id="dashboard-root">
-      <section class="loading">Loading your dashboard...</section>
-    </main>
+    <a href="/account/signin.html" class="btn" role="button">Sign In</a>
+    <a href="/account/signup.html" class="btn" role="button">Sign Up</a>
   </div>
+
+  <footer>
+    &copy; 2025 Al Mahdi. All rights reserved.
+  </footer>
 </body>
 </html>
