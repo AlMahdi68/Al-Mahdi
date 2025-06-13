@@ -3,28 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Social Automation Platform</title>
+  <title>Log In - Al Mahdi Social Automation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css"/>
+  <style>
+    .main-card {
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 2em;
+      max-width: 420px;
+      padding: 2.5em 2em 2.2em 2em;
+      margin: 2.3em auto 2.7em auto;
+      text-align: center;
+      border: 1.5px solid rgba(255,255,255,0.28);
+    }
+    .main-card h2 {
+      font-size: 2em;
+      font-weight: 700;
+      margin: 0 0 0.5em 0;
+      color: #4f46e5;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2em;
+      align-items: center;
+      margin: 1.7em 0 0 0;
+    }
+    input {
+      width: 90%;
+      padding: 0.85em;
+      border-radius: 1.2em;
+      border: 1.2px solid #c7d2fe;
+      font-size: 1.1em;
+      background: rgba(255,255,255,0.6);
+      transition: border 0.18s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+    .error {
+      color: #d90429;
+      margin-top: 1.1em;
+      font-size: 1em;
+      min-height: 1.8em;
+      text-align: center;
+    }
+    .alt {
+      margin-top: 1.7em;
+      color: #6366f1;
+      font-size: 1em;
+    }
+    .alt a {
+      color: #4f46e5;
+      text-decoration: underline;
+      font-weight: 700;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Login</h1>
-    <a href="index.html" class="btn">Home</a>
-    <a href="signup.html" class="btn">Sign Up</a>
+    <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">Al Mahdi</a></div>
   </header>
-  <main>
-    <form id="login-form">
-      <input type="email" id="email" placeholder="Email" required/>
-      <input type="password" id="password" placeholder="Password" required/>
-      <button type="submit" class="btn">Login</button>
+  <div class="main-card">
+    <h2>Log In</h2>
+    <form id="login-form" autocomplete="on">
+      <input type="email" id="email" placeholder="Email" autocomplete="email" required/>
+      <input type="password" id="password" placeholder="Password" autocomplete="current-password" required/>
+      <button type="submit" class="btn">Log In</button>
     </form>
     <div id="login-error" class="error"></div>
-  </main>
+    <div class="alt">
+      Don’t have an account? <a href="signup.html">Sign Up</a>
+    </div>
+  </div>
   <div class="footer">
     &copy; 2025 Al Mahdi Social Automation Platform
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="supabaseClient.js"></script>
-  <script src="auth.js"></script>
+  <script>
+    // Demo mode: Show popup on login (remove if using real backend)
+    document.getElementById("login-form").addEventListener("submit", function(e){
+      e.preventDefault();
+      document.getElementById("login-error").textContent = "";
+      setTimeout(function(){
+        alert("Demo: Login successful!");
+        window.location.href = "dashboard.html";
+      }, 300);
+    });
+  </script>
 </body>
 </html>
