@@ -1,0 +1,4 @@
+// Supabase credentials for your project
+const SUPABASE_URL = "https://jaqjxmttwwcenndrsizq.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcWp4bXR0d3djZW5uZHJzaXpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NzU5MjgsImV4cCI6MjA2NTM1MTkyOH0.PjDBZk79fHnmMgKhtSTo_BtkwN9YeGsz9Sd1lZqhTwQ";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
