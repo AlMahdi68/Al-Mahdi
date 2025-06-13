@@ -1,6 +1,15 @@
-// Example placeholder for dashboard actions
 document.addEventListener("DOMContentLoaded", async () => {
-  const user = await supabase.auth.getUser();
-  document.getElementById("stats").textContent = "Welcome to your dashboard!";
-  // Fetch and display stats, scheduled posts, agent controls, etc.
+  // Check if user is logged in
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+  document.getElementById("stats").textContent = `Welcome to your dashboard, ${user.email}!`;
+
+  // Log out
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    window.location.href = "index.html";
+  });
 });
