@@ -3,50 +3,123 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Al Mahdi</title>
+  <title>Al Mahdi | User Dashboard</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: #fff;
+      padding: 20px;
+    }
+    .container {
+      max-width: 960px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #ffd700; /* Gold */
+    }
+    .section {
+      background: #111;
+      border: 1px solid #333;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .stat-box {
+      flex: 1;
+      min-width: 140px;
+      background: #222;
+      margin: 10px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      color: #ffd700;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+    .logout-btn {
+      background: #ffd700;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .logout-btn:hover {
+      background: #fff;
+    }
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .toggle-container input {
+      margin-left: 10px;
+    }
+    .scheduled-post {
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #1a1a1a;
+      border-left: 4px solid #ffd700;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Al Mahdi Dashboard</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><button id="logout-button">Logout</button></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="container">
+    <h1>👋 Welcome to Your Dashboard</h1>
+    <p>Email: <strong id="user-email">Loading...</strong></p>
+    <p>Tier: <strong id="user-tier">-</strong></p>
 
-  <main>
-    <section>
-      <h2 id="user-welcome"></h2>
-<div>
-  <p>Total Posts: <span id="total-posts">0</span></p>
-  <p>Approved: <span id="approved-posts">0</span></p>
-  <p>Pending: <span id="pending-posts">0</span></p>
-</div>
+    <div class="section">
+      <h2>🚀 Automation</h2>
+      <div class="toggle-container">
+        <label for="automation-toggle">Enable Content Automation</label>
+        <input type="checkbox" id="automation-toggle" />
+      </div>
+    </div>
 
-<div>
-  <p>Revenue Earned: $<span id="revenue-earned">0.00</span></p>
-  <p>Clicks: <span id="clicks-count">0</span></p>
-</div>
+    <div class="section">
+      <h2>📅 Scheduled Content</h2>
+      <div id="scheduled-posts">
+        <p>Loading your scheduled posts...</p>
+      </div>
+    </div>
 
-<button id="logout-btn">Logout</button>
-      <h3>Your AI Agent Summary</h3>
-      <ul>
-        <li>📢 Posts Scheduled: <span id="posts-count">0</span></li>
-        <li>📈 Engagement Rate: <span id="engagement-rate">0%</span></li>
-        <li>💰 Earnings: $<span id="earnings">0.00</span></li>
-      </ul>
-    </section>
-  </main>
+    <div class="section">
+      <h2>📈 Performance</h2>
+      <div class="stats">
+        <div class="stat-box">
+          <h3>Followers</h3>
+          <p id="followers-count">0</p>
+        </div>
+        <div class="stat-box">
+          <h3>Views</h3>
+          <p id="views-count">0</p>
+        </div>
+        <div class="stat-box">
+          <h3>Clicks</h3>
+          <p id="clicks-count">0</p>
+        </div>
+      </div>
+    </div>
 
-  <footer>
-    <p>&copy; 2025 Al Mahdi Platform</p>
-  </footer>
+    <div class="section">
+      <h2>💰 Monetization</h2>
+      <p>Total Earnings: <strong id="total-income">$0.00</strong></p>
+    </div>
 
-  <script type="module" src="supabaseclient.js"></script>
-  <script type="module" src="dashboard.js"></script>
+    <div class="section" style="text-align: center;">
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
