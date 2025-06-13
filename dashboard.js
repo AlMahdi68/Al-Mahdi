@@ -1,3 +1,8 @@
+import { supabase } from './supabaseclient.js';
+
+// Example usage
+const { data, error } = await supabase.from('users').select('*');
+
 // dashboard.js
 // Handles dashboard page logic for Al Mahdi platform
 
@@ -81,8 +86,3 @@ logoutBtn.addEventListener('click', async () => {
 });
 
 // Initialize dashboard on page load
-document.addEventListener('DOMContentLoaded', loadDashboard);
-import { supabase } from './supabaseclient.js';
-
-// Example usage
-const { data, error } = await supabase.from('users').select('*');
