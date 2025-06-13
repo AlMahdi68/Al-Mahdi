@@ -1,62 +1,48 @@
-import { supabase } from './supabaseclient.js';
+// dashboard.js
+// User dashboard logic for Al Mahdi platform using Supabase and local session
 
-async function checkSession() {
-  const {
-    data: { session },
-    error: sessionError,
-  } = await supabase.auth.getSession();
+const API_BASE = '/api';
+const user = Auth.getSession();
 
-  if (sessionError) {
-    console.error("Session error:", sessionError.message);
-    return;
-  }
-
-  if (!session) {
-    window.location.href = "login.html"; // ✅ Slash removed
-    return;
-  }
-
-  const user = session.user;
-
-  // Fetch user profile data
-  const { data: profile, error: profileError } = await supabase
-    .from('users')
-    .select('username')
-    .eq('id', user.id)
-    .single();
-
-  if (profileError) {
-    console.error("Error fetching user profile:", profileError.message);
-  } else {
-    const username = profile?.username || "User";
-    document.getElementById("username").textContent = username;
-  }
-
-  // Placeholder values (these will be dynamic when agents are integrated)
-  loadAgentStats();
+if (!user) {
+  window.location.href = 'login.html'; // Redirect if not logged in
 }
 
-// Simulate stats (replace with actual Supabase or agent logic later)
-function loadAgentStats() {
-  // In future, fetch this from Supabase or agent outputs
-  const posts = 42;
-  const engagement = 8.7;
-  const earnings = 319.45;
+// Display welcome message
+document.getElementById('user-welcome').textContent = `Welcome, ${user.username || user.email}!`;
 
-  document.getElementById("posts-count").textContent = posts;
-  document.getElementById("engagement-rate").textContent = `${engagement}%`;
-  document.getElementById("earnings").textContent = earnings.toFixed(2);
+// Load user-specific stats and data
+async function loadDashboardData() {
+  try {
+    // Fetch posts
+    const postsRes = await fetch(`${API_BASE}/content.js?userId=${user.id}`);
+    const posts = await postsRes.json();
+
+    const postsCount = posts.length;
+    const approvedPosts = posts.filter(p => p.status === 'approved').length;
+    const pendingPosts = posts.filter(p => p.status === 'pending').length;
+
+    document.getElementById('total-posts').textContent = postsCount;
+    document.getElementById('approved-posts').textContent = approvedPosts;
+    document.getElementById('pending-posts').textContent = pendingPosts;
+
+    // Load monetization data
+    const monetizationRes = await fetch(`${API_BASE}/monetization.js?userId=${user.id}`);
+    const monetization = await monetizationRes.json();
+
+    document.getElementById('revenue-earned').textContent = monetization.totalRevenue || '0.00';
+    document.getElementById('clicks-count').textContent = monetization.totalClicks || '0';
+  } catch (err) {
+    console.error('Error loading dashboard data:', err);
+    alert('Failed to load dashboard data.');
+  }
 }
 
-// Logout logic
-document.getElementById("logout-button").addEventListener("click", async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    console.error("Logout error:", error.message);
-    return;
-  }
-  window.location.href = "login.html"; // ✅ Slash removed
+// Logout
+document.getElementById('logout-btn').addEventListener('click', () => {
+  Auth.logout();
+  window.location.href = 'login.html';
 });
 
-// On page load
-checkSession();
+// Initialize dashboard
+loadDashboardData();
