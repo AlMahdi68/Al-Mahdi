@@ -2,190 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign Up - Al Mahdi</title>
-  <style>
-    body, html {
-      margin: 0; padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #111;
-      color: #eee;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .container {
-      background: #222;
-      padding: 2rem 3rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px limegreen;
-      max-width: 400px;
-      width: 100%;
-    }
-    h2 {
-      margin-top: 0;
-      color: limegreen;
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-weight: 600;
-    }
-    input[type="email"],
-    input[type="password"],
-    input[type="text"] {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      border-radius: 5px;
-      border: 1px solid #444;
-      background: #111;
-      color: #eee;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-    input::placeholder {
-      color: #777;
-    }
-    button {
-      width: 100%;
-      background: limegreen;
-      border: none;
-      padding: 0.75rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-      border-radius: 5px;
-      cursor: pointer;
-      color: #111;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #99cc00;
-    }
-    .message {
-      margin-top: 1rem;
-      text-align: center;
-      font-size: 0.9rem;
-    }
-    .message a {
-      color: limegreen;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .message a:hover {
-      text-decoration: underline;
-    }
-    #error-msg {
-      color: #ff6666;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      display: none;
-    }
-    #success-msg {
-      color: #7fff7f;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      display: none;
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container" role="main">
-    <h2>Create Your Al Mahdi Account</h2>
+  <header>
+    <h1>Join Al Mahdi</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <div id="error-msg"></div>
-    <div id="success-msg"></div>
+  <main>
+    <section>
+      <h2>Create Your Account</h2>
+      <form id="signup-form">
+        <input type="text" id="username" placeholder="Username" required><br>
+        <input type="email" id="email" placeholder="Email" required><br>
+        <input type="password" id="password" placeholder="Password" required><br>
+        <button type="submit">Sign Up</button>
+      </form>
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+    </section>
+  </main>
 
-    <form id="signup-form" autocomplete="off">
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" placeholder="Choose a username" required />
+  <footer>
+    <p>&copy; 2025 Al Mahdi Platform</p>
+  </footer>
 
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+  <script type="module" src="supabaseclient.js"></script>
+  <script type="module">
+    import { supabase } from './supabaseclient.js';
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Create a password" required minlength="6" />
-
-      <button type="submit">Sign Up</button>
-    </form>
-
-    <div class="message">
-      Already have an account? <a href="/account/signin.html">Sign In</a>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = 'https://jaqjxmttwwcenndrsizq.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcWp4bXR0d3djZW5uZHJzaXpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NzU5MjgsImV4cCI6MjA2NTM1MTkyOH0.PjDBZk79fHnmMgKhtSTo_BtkwN9YeGsz9Sd1lZqhTwQ';
-
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const signupForm = document.getElementById('signup-form');
-    const errorMsg = document.getElementById('error-msg');
-    const successMsg = document.getElementById('success-msg');
-
-    signupForm.addEventListener('submit', async (e) => {
+    document.getElementById('signup-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      errorMsg.style.display = 'none';
-      successMsg.style.display = 'none';
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const username = document.getElementById('username').value;
 
-      const username = signupForm.username.value.trim();
-      const email = signupForm.email.value.trim();
-      const password = signupForm.password.value.trim();
-
-      if (!username || !email || !password) {
-        errorMsg.textContent = 'Please fill in all fields.';
-        errorMsg.style.display = 'block';
-        return;
-      }
-      if (password.length < 6) {
-        errorMsg.textContent = 'Password must be at least 6 characters.';
-        errorMsg.style.display = 'block';
-        return;
-      }
-
-      // Sign up with Supabase Auth
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: { username }
+        }
       });
 
       if (error) {
-        errorMsg.textContent = error.message || 'Failed to sign up.';
-        errorMsg.style.display = 'block';
-        return;
+        alert(error.message);
+      } else {
+        alert("Signup successful! Please check your email to confirm.");
+        window.location.href = "dashboard.html";
       }
-
-      // Insert username in profile table (assuming you have a "users" table with id and username)
-      const userId = data.user.id;
-
-      const { error: profileError } = await supabase
-        .from('users')
-        .upsert({ id: userId, username: username })
-        .eq('id', userId);
-
-      if (profileError) {
-        errorMsg.textContent = 'Signup succeeded but failed to save username.';
-        errorMsg.style.display = 'block';
-        return;
-      }
-
-      successMsg.textContent = 'Signup successful! Please check your email to confirm your account.';
-      successMsg.style.display = 'block';
-
-      // Optionally, disable the form or redirect after some delay
-      signupForm.reset();
-      setTimeout(() => {
-        window.location.href = '/account/signin.html';
-      }, 4000);
     });
   </script>
 </body>
 </html>
-<script type="module" src="/signup.js"></script>
