@@ -1,55 +1,31 @@
-import { supabase } from './supabaseclient.js';
+// signup.js
+// Handles new user registration into Supabase users table
 
-const signupForm = document.getElementById('signup-form');
-const errorMsg = document.getElementById('error-msg');
-const successMsg = document.getElementById('success-msg');
-
-signupForm.addEventListener('submit', async (e) => {
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  errorMsg.style.display = 'none';
-  successMsg.style.display = 'none';
 
-  const username = signupForm.username.value.trim();
-  const email = signupForm.email.value.trim();
-  const password = signupForm.password.value.trim();
+  const email = document.getElementById('email').value.trim();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const confirmPassword = document.getElementById('confirm-password').value.trim();
 
-  if (!username || !email || !password) {
-    errorMsg.textContent = 'Please fill in all fields.';
-    errorMsg.style.display = 'block';
-    return;
-  }
-  if (password.length < 6) {
-    errorMsg.textContent = 'Password must be at least 6 characters.';
-    errorMsg.style.display = 'block';
+  if (!email || !username || !password || !confirmPassword) {
+    alert('All fields are required.');
     return;
   }
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
-
-  if (error) {
-    errorMsg.textContent = error.message || 'Failed to sign up.';
-    errorMsg.style.display = 'block';
+  if (password !== confirmPassword) {
+    alert('Passwords do not match.');
     return;
   }
 
-  const userId = data.user.id;
+  try {
+    const newUser = await Auth.registerUser(email, username, password);
+    Auth.saveSession(newUser);
 
-  const { error: profileError } = await supabase
-    .from('users')
-    .upsert({ id: userId, username: username })
-    .eq('id', userId);
-
-  if (profileError) {
-    errorMsg.textContent = 'Signup succeeded but failed to save username.';
-    errorMsg.style.display = 'block';
-    return;
+    // Redirect to dashboard after signup
+    window.location.href = 'dashboard.html';
+  } catch (err) {
+    alert(err.message);
   }
-
-  successMsg.textContent = 'Signup successful! Please check your email to confirm your account.';
-  successMsg.style.display = 'block';
-
-  signupForm.reset();
-  setTimeout(() => {
-    window.location.href = '/account/signin.html';
-  }, 4000);
 });
