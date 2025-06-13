@@ -20,11 +20,19 @@
 
   <main>
     <section>
-      <h2>Welcome, <span id="username">User</span>!</h2>
-      <p>This is your personal dashboard where AI agents manage and grow your online income.</p>
-    </section>
+      <h2 id="user-welcome"></h2>
+<div>
+  <p>Total Posts: <span id="total-posts">0</span></p>
+  <p>Approved: <span id="approved-posts">0</span></p>
+  <p>Pending: <span id="pending-posts">0</span></p>
+</div>
 
-    <section>
+<div>
+  <p>Revenue Earned: $<span id="revenue-earned">0.00</span></p>
+  <p>Clicks: <span id="clicks-count">0</span></p>
+</div>
+
+<button id="logout-btn">Logout</button>
       <h3>Your AI Agent Summary</h3>
       <ul>
         <li>📢 Posts Scheduled: <span id="posts-count">0</span></li>
