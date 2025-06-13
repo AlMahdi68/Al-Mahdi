@@ -4,12 +4,13 @@ let users = []
 
 function validateUserPayload(payload) {
   if (!payload) return false
-  const { id, email, username, role } = payload
+  const { id, email, username, status, profile } = payload
   if (
     (id && typeof id !== 'string') ||
-    typeof email !== 'string' ||
-    typeof username !== 'string' ||
-    !['user', 'admin'].includes(role)
+    (email && typeof email !== 'string') ||
+    (username && typeof username !== 'string') ||
+    (status && typeof status !== 'string') ||
+    (profile && typeof profile !== 'object')
   ) {
     return false
   }
@@ -23,21 +24,31 @@ export default async function handler(req, res) {
     if (method === 'POST') {
       const payload = await json(req)
 
-      if (!validateUserPayload(payload)) {
+      if (!payload.email || !payload.username) {
         res.statusCode = 400
-        return res.end(JSON.stringify({ error: 'Invalid payload. Required: email (string), username (string), role ("user" or "admin").' }))
+        return res.end(JSON.stringify({ error: 'Email and username are required' }))
       }
 
-      if (users.find(u => u.email === payload.email || u.username === payload.username)) {
+      if (!validateUserPayload(payload)) {
+        res.statusCode = 400
+        return res.end(JSON.stringify({ error: 'Invalid user payload' }))
+      }
+
+      // Check if email or username already exists
+      const emailExists = users.some((u) => u.email === payload.email)
+      const usernameExists = users.some((u) => u.username === payload.username)
+
+      if (emailExists || usernameExists) {
         res.statusCode = 409
-        return res.end(JSON.stringify({ error: 'User with this email or username already exists.' }))
+        return res.end(JSON.stringify({ error: 'Email or username already exists' }))
       }
 
       const newUser = {
-        id: payload.id || Date.now().toString(),
+        id: Date.now().toString(),
         email: payload.email,
         username: payload.username,
-        role: payload.role,
+        status: payload.status || 'active',
+        profile: payload.profile || {},
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
@@ -48,61 +59,69 @@ export default async function handler(req, res) {
     }
 
     if (method === 'GET') {
-      const { id, email } = req.query
+      const { id, email, username, status } = req.query
+      let filteredUsers = users
 
-      let result = users
-
-      if (id) {
-        result = result.filter(u => u.id === id)
-      } else if (email) {
-        result = result.filter(u => u.email === email)
-      }
+      if (id) filteredUsers = filteredUsers.filter((u) => u.id === id)
+      if (email) filteredUsers = filteredUsers.filter((u) => u.email === email)
+      if (username) filteredUsers = filteredUsers.filter((u) => u.username === username)
+      if (status) filteredUsers = filteredUsers.filter((u) => u.status === status)
 
       res.statusCode = 200
-      return res.end(JSON.stringify(result))
+      return res.end(JSON.stringify(filteredUsers))
     }
 
     if (method === 'PUT') {
       const payload = await json(req)
-      const { id, email, username, role } = payload
+      const { id, email, username, status, profile } = payload
 
       if (!id) {
         res.statusCode = 400
-        return res.end(JSON.stringify({ error: 'User id is required for update.' }))
+        return res.end(JSON.stringify({ error: 'User id is required for update' }))
       }
 
-      const userIndex = users.findIndex(u => u.id === id)
-      if (userIndex === -1) {
+      const index = users.findIndex((u) => u.id === id)
+      if (index === -1) {
         res.statusCode = 404
-        return res.end(JSON.stringify({ error: 'User not found.' }))
+        return res.end(JSON.stringify({ error: 'User not found' }))
       }
 
-      if (email) users[userIndex].email = email
-      if (username) users[userIndex].username = username
-      if (role && ['user', 'admin'].includes(role)) users[userIndex].role = role
+      // Prevent duplicate email or username if updating
+      if (email && users.some((u, i) => u.email === email && i !== index)) {
+        res.statusCode = 409
+        return res.end(JSON.stringify({ error: 'Email already exists' }))
+      }
 
-      users[userIndex].updatedAt = new Date().toISOString()
+      if (username && users.some((u, i) => u.username === username && i !== index)) {
+        res.statusCode = 409
+        return res.end(JSON.stringify({ error: 'Username already exists' }))
+      }
+
+      if (email) users[index].email = email
+      if (username) users[index].username = username
+      if (status) users[index].status = status
+      if (profile && typeof profile === 'object') {
+        users[index].profile = { ...users[index].profile, ...profile }
+      }
+
+      users[index].updatedAt = new Date().toISOString()
 
       res.statusCode = 200
-      return res.end(JSON.stringify({ message: 'User updated', user: users[userIndex] }))
+      return res.end(JSON.stringify({ message: 'User updated', user: users[index] }))
     }
 
     if (method === 'DELETE') {
       const { id } = req.query
-
       if (!id) {
         res.statusCode = 400
-        return res.end(JSON.stringify({ error: 'User id query parameter required for deletion.' }))
+        return res.end(JSON.stringify({ error: 'User id query parameter is required for deletion' }))
       }
-
       const beforeLength = users.length
-      users = users.filter(u => u.id !== id)
-
+      users = users.filter((u) => u.id !== id)
       if (users.length === beforeLength) {
         res.statusCode = 404
-        return res.end(JSON.stringify({ error: 'User not found.' }))
+        return res.end(JSON.stringify({ error: 'User not found' }))
       }
-
       res.statusCode = 200
       return res.end(JSON.stringify({ message: 'User deleted' }))
     }
@@ -111,7 +130,6 @@ export default async function handler(req, res) {
     res.statusCode = 405
     return res.end(JSON.stringify({ error: `Method ${method} Not Allowed` }))
   } catch (error) {
-    console.error('User API error:', error)
     res.statusCode = 500
     return res.end(JSON.stringify({ error: 'Internal Server Error' }))
   }
