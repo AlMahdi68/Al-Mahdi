@@ -82,3 +82,7 @@ logoutBtn.addEventListener('click', async () => {
 
 // Initialize dashboard on page load
 document.addEventListener('DOMContentLoaded', loadDashboard);
+import { supabase } from './supabaseclient.js';
+
+// Example usage
+const { data, error } = await supabase.from('users').select('*');
