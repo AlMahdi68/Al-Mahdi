@@ -2,97 +2,188 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up - Al Mahdi Social Automation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up - Al Mahdi</title>
   <style>
-    .main-card {
-      background: rgba(255,255,255,0.15);
-      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-radius: 2em;
-      max-width: 420px;
-      padding: 2.5em 2em 2.2em 2em;
-      margin: 2.3em auto 2.7em auto;
-      text-align: center;
-      border: 1.5px solid rgba(255,255,255,0.28);
-    }
-    .main-card h2 {
-      font-size: 2em;
-      font-weight: 700;
-      margin: 0 0 0.5em 0;
-      color: #4f46e5;
-    }
-    form {
+    body, html {
+      margin: 0; padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #111;
+      color: #eee;
       display: flex;
-      flex-direction: column;
-      gap: 1.2em;
+      justify-content: center;
       align-items: center;
-      margin: 1.7em 0 0 0;
     }
-    input {
-      width: 90%;
-      padding: 0.85em;
-      border-radius: 1.2em;
-      border: 1.2px solid #c7d2fe;
-      font-size: 1.1em;
-      background: rgba(255,255,255,0.6);
-      transition: border 0.18s;
+    .container {
+      background: #222;
+      padding: 2rem 3rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px limegreen;
+      max-width: 400px;
+      width: 100%;
     }
-    input:focus {
-      outline: none;
-      border-color: #6366f1;
-    }
-    .error {
-      color: #d90429;
-      margin-top: 1.1em;
-      font-size: 1em;
-      min-height: 1.8em;
+    h2 {
+      margin-top: 0;
+      color: limegreen;
       text-align: center;
-    }
-    .alt {
-      margin-top: 1.7em;
-      color: #6366f1;
-      font-size: 1em;
-    }
-    .alt a {
-      color: #4f46e5;
-      text-decoration: underline;
+      margin-bottom: 1.5rem;
       font-weight: 700;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: 1px solid #444;
+      background: #111;
+      color: #eee;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    input::placeholder {
+      color: #777;
+    }
+    button {
+      width: 100%;
+      background: limegreen;
+      border: none;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #111;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #99cc00;
+    }
+    .message {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .message a {
+      color: limegreen;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .message a:hover {
+      text-decoration: underline;
+    }
+    #error-msg {
+      color: #ff6666;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    #success-msg {
+      color: #7fff7f;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: none;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">Al Mahdi</a></div>
-  </header>
-  <div class="main-card">
-    <h2>Sign Up</h2>
-    <form id="signup-form" autocomplete="on">
-      <input type="text" id="name" placeholder="Name" autocomplete="name" required/>
-      <input type="email" id="email" placeholder="Email" autocomplete="email" required/>
-      <input type="password" id="password" placeholder="Password" autocomplete="new-password" required/>
-      <button type="submit" class="btn">Sign Up</button>
+  <div class="container" role="main">
+    <h2>Create Your Al Mahdi Account</h2>
+
+    <div id="error-msg"></div>
+    <div id="success-msg"></div>
+
+    <form id="signup-form" autocomplete="off">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Choose a username" required />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Create a password" required minlength="6" />
+
+      <button type="submit">Sign Up</button>
     </form>
-    <div id="signup-error" class="error"></div>
-    <div class="alt">
-      Already have an account? <a href="login.html">Log In</a>
+
+    <div class="message">
+      Already have an account? <a href="/account/signin.html">Sign In</a>
     </div>
   </div>
-  <div class="footer">
-    &copy; 2025 Al Mahdi Social Automation Platform
-  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Demo mode: Show popup on signup (remove if using real backend)
-    document.getElementById("signup-form").addEventListener("submit", function(e){
+    const SUPABASE_URL = 'https://jaqjxmttwwcenndrsizq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcWp4bXR0d3djZW5uZHJzaXpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NzU5MjgsImV4cCI6MjA2NTM1MTkyOH0.PjDBZk79fHnmMgKhtSTo_BtkwN9YeGsz9Sd1lZqhTwQ';
+
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const signupForm = document.getElementById('signup-form');
+    const errorMsg = document.getElementById('error-msg');
+    const successMsg = document.getElementById('success-msg');
+
+    signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      document.getElementById("signup-error").textContent = "";
-      setTimeout(function(){
-        alert("Demo: Signup successful! You can now log in.");
-        window.location.href = "login.html";
-      }, 300);
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
+
+      const username = signupForm.username.value.trim();
+      const email = signupForm.email.value.trim();
+      const password = signupForm.password.value.trim();
+
+      if (!username || !email || !password) {
+        errorMsg.textContent = 'Please fill in all fields.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      if (password.length < 6) {
+        errorMsg.textContent = 'Password must be at least 6 characters.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Sign up with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        errorMsg.textContent = error.message || 'Failed to sign up.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Insert username in profile table (assuming you have a "users" table with id and username)
+      const userId = data.user.id;
+
+      const { error: profileError } = await supabase
+        .from('users')
+        .upsert({ id: userId, username: username })
+        .eq('id', userId);
+
+      if (profileError) {
+        errorMsg.textContent = 'Signup succeeded but failed to save username.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      successMsg.textContent = 'Signup successful! Please check your email to confirm your account.';
+      successMsg.style.display = 'block';
+
+      // Optionally, disable the form or redirect after some delay
+      signupForm.reset();
+      setTimeout(() => {
+        window.location.href = '/account/signin.html';
+      }, 4000);
     });
   </script>
 </body>
