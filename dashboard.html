@@ -2,14 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Social Automation Platform</title>
   <link rel="stylesheet" href="style.css"/>
-  <title>Dashboard</title>
 </head>
 <body>
-  <header><h2>Dashboard</h2></header>
-  <section id="stats"></section>
-  <section id="scheduler"></section>
-  <section id="agents"></section>
+  <header>
+    <h1>Dashboard</h1>
+    <a href="index.html" class="btn">Home</a>
+    <a href="admin.html" class="btn">Admin</a>
+    <button id="logout-btn" class="btn">Log Out</button>
+  </header>
+  <main>
+    <section id="stats"></section>
+    <section id="scheduler"></section>
+    <section id="agents"></section>
+  </main>
+  <div class="footer">
+    &copy; 2025 Al Mahdi Social Automation Platform
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="supabaseClient.js"></script>
   <script src="dashboard.js"></script>
