@@ -2,148 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Social Automation Platform</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', Arial, sans-serif;
-      background: linear-gradient(135deg,#4f46e5 0%,#a5b4fc 100%);
-      min-height: 100vh;
-      margin: 0;
-      padding: 0;
-      color: #232946;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    header {
-      width: 100%;
-      text-align: center;
-      padding: 3rem 1rem 1rem 1rem;
-    }
-    .logo {
-      font-size: 2.7em;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 0.03em;
-      text-shadow: 0 2px 32px #6366f188;
-      margin-bottom: 0.7em;
-    }
-    .main-card {
-      background: rgba(255,255,255,0.15);
-      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-radius: 2em;
-      max-width: 520px;
-      padding: 2.7em 2em 2.3em 2em;
-      margin: 0 auto 2.5em auto;
-      text-align: center;
-      border: 1.5px solid rgba(255,255,255,0.28);
-    }
-    .main-card h2 {
-      font-size: 2.1em;
-      font-weight: 700;
-      margin: 0 0 0.4em 0;
-      color: #4f46e5;
-      letter-spacing: 0.01em;
-    }
-    .main-card p {
-      font-size: 1.22em;
-      color: #22223b;
-      margin: 0.4em 0 2.2em 0;
-    }
-    .cta-row {
-      display: flex;
-      justify-content: center;
-      gap: 1.4em;
-      margin-top: 1.8em;
-    }
-    .btn {
-      background: linear-gradient(90deg,#6366f1 60%,#818cf8 100%);
-      color: #fff;
-      padding: 0.85em 2.2em;
-      border-radius: 2em;
-      font-size: 1.15em;
-      font-weight: 700;
-      border: none;
-      box-shadow: 0 4px 24px #6366f144;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      transition: transform 0.18s, box-shadow 0.18s, background 0.2s;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .btn:hover {
-      background: linear-gradient(90deg,#818cf8 0%,#6366f1 100%);
-      transform: translateY(-2px) scale(1.04);
-      box-shadow: 0 8px 32px #6366f177;
-    }
-    .icon-row {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 1em;
-      margin-bottom: 1.7em;
-    }
-    .icon {
-      width: 54px;
-      height: 54px;
-      background: rgba(79,70,229,0.14);
-      border-radius: 1.2em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2em;
-      color: #4f46e5;
-      box-shadow: 0 2px 12px #6366f133;
-    }
-    .ai {
-      font-size: 2.2em;
-      color: #10b981;
-      background: rgba(16,185,129,0.12);
-    }
-    .footer {
-      width: 100%;
-      text-align: center;
-      color: #c7d2fe;
-      font-size: 1em;
-      margin: 2.4em 0 1.2em 0;
-      letter-spacing: 0.04em;
-      font-weight: 400;
-      text-shadow: 0 1px 12px #6366f133;
-    }
-    @media (max-width: 700px) {
-      .main-card { padding: 1.5em 0.7em; }
-      .icon-row { gap: 0.5em; }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Al Mahdi — Dashboard</title>
+  <link rel="stylesheet" href="./assets/style.css" />
+  <script type="module" src="./assets/dashboard.js" defer></script>
 </head>
 <body>
-  <header>
-    <div class="logo">Al Mahdi<br>Social Automation</div>
-  </header>
-  <div class="main-card">
-    <div class="icon-row">
-      <div class="icon"><span>📈</span></div>
-      <div class="icon ai"><span>🤖</span></div>
-      <div class="icon"><span>💸</span></div>
-    </div>
-    <h2>Automate. Monetize. Grow.</h2>
-    <p>
-      Connect your social accounts. Let AI agents schedule, analyze, and engage for you.<br>
-      Focus on what matters, we’ll handle the rest.<br>
-      <strong style="color:#6366f1">Supercharge your socials with AI.</strong>
-    </p>
-    <div class="cta-row">
-      <a href="signup.html" class="btn">Get Started</a>
-      <a href="login.html" class="btn">Log In</a>
-    </div>
-  </div>
-  <div class="footer">
-    &copy; 2025 Al Mahdi Social Automation Platform
+  <div class="app-wrapper">
+    <header class="navbar">
+      <h1>Al Mahdi</h1>
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="content.html">Content</a>
+        <a href="analytics.html">Analytics</a>
+        <a href="settings.html">Settings</a>
+        <a href="logout.html">Logout</a>
+      </nav>
+    </header>
+
+    <main id="dashboard-root">
+      <section class="loading">Loading your dashboard...</section>
+    </main>
   </div>
 </body>
 </html>
