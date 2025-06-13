@@ -1,15 +1,15 @@
 import { json } from 'micro'
 
-let agentTasks = []
+let agents = []
 
-function validateTaskPayload(payload) {
+function validateAgentPayload(payload) {
   if (!payload) return false
-  const { userId, taskType, data } = payload
+  const { id, name, status, data } = payload
   if (
-    typeof userId !== 'string' ||
-    typeof taskType !== 'string' ||
-    typeof data !== 'object' ||
-    data === null
+    (id && typeof id !== 'string') ||
+    (name && typeof name !== 'string') ||
+    (status && typeof status !== 'string') ||
+    (data && typeof data !== 'object')
   ) {
     return false
   }
@@ -23,97 +23,81 @@ export default async function handler(req, res) {
     if (method === 'POST') {
       const payload = await json(req)
 
-      if (!validateTaskPayload(payload)) {
+      if (!payload.name) {
         res.statusCode = 400
-        return res.end(JSON.stringify({ error: 'Invalid payload. Required: userId (string), taskType (string), data (object).' }))
+        return res.end(JSON.stringify({ error: 'Agent name is required' }))
       }
 
-      const newTask = {
+      if (!validateAgentPayload(payload)) {
+        res.statusCode = 400
+        return res.end(JSON.stringify({ error: 'Invalid agent payload' }))
+      }
+
+      const newAgent = {
         id: Date.now().toString(),
-        userId: payload.userId,
-        taskType: payload.taskType,
-        data: payload.data,
-        status: 'pending',
+        name: payload.name,
+        status: payload.status || 'active',
+        data: payload.data || {},
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
 
-      agentTasks.push(newTask)
+      agents.push(newAgent)
       res.statusCode = 201
-      return res.end(JSON.stringify({ message: 'Agent task created', task: newTask }))
+      return res.end(JSON.stringify({ message: 'Agent created', agent: newAgent }))
     }
 
     if (method === 'GET') {
-      const { userId, status } = req.query
-
-      let tasks = agentTasks
-
-      if (userId) {
-        tasks = tasks.filter((task) => task.userId === userId)
-      }
-
-      if (status) {
-        tasks = tasks.filter((task) => task.status === status)
-      }
-
       res.statusCode = 200
-      return res.end(JSON.stringify(tasks))
+      return res.end(JSON.stringify(agents))
     }
 
     if (method === 'PUT') {
       const payload = await json(req)
-      const { id, status, data } = payload
+      const { id, name, status, data } = payload
 
       if (!id) {
         res.statusCode = 400
-        return res.end(JSON.stringify({ error: 'Task id is required for update.' }))
+        return res.end(JSON.stringify({ error: 'Agent id is required for update' }))
       }
 
-      const taskIndex = agentTasks.findIndex((t) => t.id === id)
-      if (taskIndex === -1) {
+      const index = agents.findIndex((a) => a.id === id)
+      if (index === -1) {
         res.statusCode = 404
-        return res.end(JSON.stringify({ error: 'Task not found.' }))
+        return res.end(JSON.stringify({ error: 'Agent not found' }))
       }
 
-      if (status) {
-        agentTasks[taskIndex].status = status
-      }
-
+      if (name) agents[index].name = name
+      if (status) agents[index].status = status
       if (data && typeof data === 'object') {
-        agentTasks[taskIndex].data = { ...agentTasks[taskIndex].data, ...data }
+        agents[index].data = { ...agents[index].data, ...data }
       }
 
-      agentTasks[taskIndex].updatedAt = new Date().toISOString()
-
+      agents[index].updatedAt = new Date().toISOString()
       res.statusCode = 200
-      return res.end(JSON.stringify({ message: 'Task updated', task: agentTasks[taskIndex] }))
+      return res.end(JSON.stringify({ message: 'Agent updated', agent: agents[index] }))
     }
 
     if (method === 'DELETE') {
       const { id } = req.query
-
       if (!id) {
         res.statusCode = 400
-        return res.end(JSON.stringify({ error: 'Task id query parameter is required for deletion.' }))
+        return res.end(JSON.stringify({ error: 'Agent id is required for deletion' }))
       }
-
-      const beforeLength = agentTasks.length
-      agentTasks = agentTasks.filter((t) => t.id !== id)
-
-      if (agentTasks.length === beforeLength) {
+      const lengthBefore = agents.length
+      agents = agents.filter((a) => a.id !== id)
+      if (agents.length === lengthBefore) {
         res.statusCode = 404
-        return res.end(JSON.stringify({ error: 'Task not found.' }))
+        return res.end(JSON.stringify({ error: 'Agent not found' }))
       }
-
       res.statusCode = 200
-      return res.end(JSON.stringify({ message: 'Task deleted' }))
+      return res.end(JSON.stringify({ message: 'Agent deleted' }))
     }
 
     res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE'])
     res.statusCode = 405
     return res.end(JSON.stringify({ error: `Method ${method} Not Allowed` }))
   } catch (error) {
-    console.error('Agent API error:', error)
     res.statusCode = 500
     return res.end(JSON.stringify({ error: 'Internal Server Error' }))
   }
