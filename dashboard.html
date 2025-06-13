@@ -2,92 +2,227 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Al Mahdi Social Automation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Al Mahdi Dashboard</title>
   <style>
-    .main-card {
-      background: rgba(255,255,255,0.16);
-      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-radius: 2em;
-      max-width: 520px;
-      padding: 2.5em 2em 2.2em 2em;
-      margin: 2.7em auto 2.7em auto;
-      text-align: center;
-      border: 1.5px solid rgba(255,255,255,0.28);
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column; min-height: 100vh;
     }
-    .main-card h2 {
-      font-size: 2em;
-      font-weight: 700;
-      color: #4f46e5;
-      margin: 0 0 0.5em 0;
-    }
-    .main-card p {
-      font-size: 1.1em;
-      margin-bottom: 1.8em;
-      color: #22223b;
-    }
-    .section-row {
-      margin-top: 2.5em;
+    header {
+      background: #181818;
+      padding: 1rem 2rem;
       display: flex;
-      flex-direction: column;
-      gap: 1.3em;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid limegreen;
     }
-    .glass-section {
-      background: rgba(99,102,241,0.12);
-      border-radius: 1em;
-      padding: 1.2em 1em;
-      box-shadow: 0 1px 8px #6366f122;
-      color: #36344d;
-      font-size: 1.04em;
-      text-align: left;
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      color: limegreen;
+      font-size: 1.8rem;
     }
-    .log-out-row {
-      margin-top: 2.3em;
+    nav a {
+      color: limegreen;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .stats {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: #222;
+      border-radius: 8px;
+      padding: 1.5rem;
+      flex: 1;
       text-align: center;
+      box-shadow: 0 0 8px limegreen;
+    }
+    .stat-card h2 {
+      font-size: 2.5rem;
+      margin: 0;
+      color: limegreen;
+    }
+    .stat-card p {
+      margin: 0.5rem 0 0;
+      font-size: 1rem;
+      color: #ccc;
+    }
+    #welcome-msg {
+      margin-bottom: 2rem;
+      font-size: 1.25rem;
+    }
+    #recent-posts {
+      background: #222;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    #recent-posts h3 {
+      margin-top: 0;
+      border-bottom: 1px solid limegreen;
+      padding-bottom: 0.5rem;
+      color: limegreen;
+    }
+    #posts-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    #posts-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #444;
+    }
+    #posts-list li:last-child {
+      border-bottom: none;
+    }
+    #logout-btn {
+      background: limegreen;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      color: #111;
+      transition: background 0.3s ease;
+    }
+    #logout-btn:hover {
+      background: #99cc00;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">Al Mahdi</a></div>
+    <h1>Al Mahdi</h1>
+    <nav>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/admin.html" id="admin-link" style="display:none;">Admin Panel</a>
+      <button id="logout-btn">Logout</button>
+    </nav>
   </header>
-  <div class="main-card">
-    <h2>Dashboard</h2>
-    <p>Welcome! Here you’ll see your social automation stats, scheduled posts, and AI agent activity.</p>
-    <div class="section-row">
-      <div class="glass-section">
-        <strong>📈 Today’s Stats:</strong>
-        <ul>
-          <li>Followers gained: <b>+15</b></li>
-          <li>Posts scheduled: <b>3</b></li>
-          <li>Engagements: <b>89</b></li>
-        </ul>
+
+  <main>
+    <div id="welcome-msg">Loading user info...</div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h2 id="total-posts">0</h2>
+        <p>Total Posts</p>
       </div>
-      <div class="glass-section">
-        <strong>🤖 AI Agent Activity:</strong>
-        <ul>
-          <li>Auto-replied to 5 comments</li>
-          <li>Suggested 2 new post ideas</li>
-        </ul>
+      <div class="stat-card">
+        <h2 id="total-followers">0</h2>
+        <p>Followers</p>
       </div>
-      <div class="glass-section">
-        <strong>🗓️ Upcoming Scheduled Posts:</strong>
-        <ul>
-          <li>Instagram: <i>Motivation Monday</i> - 9:00 AM</li>
-          <li>Twitter: <i>Growth Hack Tip</i> - 2:00 PM</li>
-        </ul>
+      <div class="stat-card">
+        <h2 id="total-earnings">$0</h2>
+        <p>Earnings</p>
       </div>
     </div>
-    <div class="log-out-row">
-      <a href="index.html" class="btn">Log Out</a>
-    </div>
-  </div>
-  <div class="footer">
-    &copy; 2025 Al Mahdi Social Automation Platform
-  </div>
+
+    <section id="recent-posts">
+      <h3>Your Recent Posts</h3>
+      <ul id="posts-list">
+        <li>Loading posts...</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://jaqjxmttwwcenndrsizq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcWp4bXR0d3djZW5uZHJzaXpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NzU5MjgsImV4cCI6MjA2NTM1MTkyOH0.PjDBZk79fHnmMgKhtSTo_BtkwN9YeGsz9Sd1lZqhTwQ';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const welcomeMsg = document.getElementById('welcome-msg');
+    const adminLink = document.getElementById('admin-link');
+    const logoutBtn = document.getElementById('logout-btn');
+    const postsList = document.getElementById('posts-list');
+    const totalPostsSpan = document.getElementById('total-posts');
+    const totalFollowersSpan = document.getElementById('total-followers');
+    const totalEarningsSpan = document.getElementById('total-earnings');
+
+    async function loadDashboard() {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        // Not logged in, redirect to signin page
+        window.location.href = '/account/signin.html';
+        return;
+      }
+
+      // Fetch user profile data
+      const { data: profile, error: profileError } = await supabase
+        .from('users')
+        .select('username, email, role')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError) {
+        welcomeMsg.textContent = `Welcome, ${user.email}`;
+      } else {
+        welcomeMsg.textContent = `Welcome, ${profile.username || profile.email}`;
+        if (profile.role === 'admin') {
+          adminLink.style.display = 'inline-block';
+        }
+      }
+
+      // Load user's posts count & recent posts
+      const { data: posts, error: postsError } = await supabase
+        .from('posts')
+        .select('id, title, created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (postsError) {
+        postsList.innerHTML = '<li>Failed to load posts.</li>';
+      } else if (!posts.length) {
+        postsList.innerHTML = '<li>No posts found.</li>';
+      } else {
+        postsList.innerHTML = '';
+        posts.forEach((post) => {
+          const li = document.createElement('li');
+          li.textContent = `${post.title} — ${new Date(post.created_at).toLocaleDateString()}`;
+          postsList.appendChild(li);
+        });
+      }
+
+      // Placeholder stats (replace with real data as you develop)
+      // For now, using random numbers for demo
+      totalPostsSpan.textContent = posts?.length || 0;
+      totalFollowersSpan.textContent = Math.floor(Math.random() * 1000);
+      totalEarningsSpan.textContent = `$${(Math.random() * 500).toFixed(2)}`;
+    }
+
+    logoutBtn.addEventListener('click', async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        alert('Logout failed: ' + error.message);
+      } else {
+        window.location.href = '/account/signin.html';
+      }
+    });
+
+    loadDashboard();
+  </script>
 </body>
 </html>
