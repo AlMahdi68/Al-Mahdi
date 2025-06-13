@@ -2,11 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Al Mahdi – Admin</title>
-  <script type="module" src="./assets/admin_Version2.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Social Automation Platform</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <h1>Admin Dashboard</h1>
-  <div id="admin-root"></div>
+  <header>
+    <h1>Admin Panel</h1>
+    <a href="index.html" class="btn">Home</a>
+    <a href="dashboard.html" class="btn">Dashboard</a>
+  </header>
+  <main>
+    <section id="admin-stats"></section>
+    <section id="manage-users"></section>
+    <section id="manage-agents"></section>
+  </main>
+  <div class="footer">
+    &copy; 2025 Al Mahdi Social Automation Platform
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="supabaseClient.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>
