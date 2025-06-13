@@ -3,26 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Social Automation Platform</title>
+  <title>Dashboard - Al Mahdi Social Automation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css"/>
+  <style>
+    .main-card {
+      background: rgba(255,255,255,0.16);
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 2em;
+      max-width: 520px;
+      padding: 2.5em 2em 2.2em 2em;
+      margin: 2.7em auto 2.7em auto;
+      text-align: center;
+      border: 1.5px solid rgba(255,255,255,0.28);
+    }
+    .main-card h2 {
+      font-size: 2em;
+      font-weight: 700;
+      color: #4f46e5;
+      margin: 0 0 0.5em 0;
+    }
+    .main-card p {
+      font-size: 1.1em;
+      margin-bottom: 1.8em;
+      color: #22223b;
+    }
+    .section-row {
+      margin-top: 2.5em;
+      display: flex;
+      flex-direction: column;
+      gap: 1.3em;
+    }
+    .glass-section {
+      background: rgba(99,102,241,0.12);
+      border-radius: 1em;
+      padding: 1.2em 1em;
+      box-shadow: 0 1px 8px #6366f122;
+      color: #36344d;
+      font-size: 1.04em;
+      text-align: left;
+    }
+    .log-out-row {
+      margin-top: 2.3em;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Dashboard</h1>
-    <a href="index.html" class="btn">Home</a>
-    <a href="admin.html" class="btn">Admin</a>
-    <button id="logout-btn" class="btn">Log Out</button>
+    <div class="logo"><a href="index.html" style="color:inherit;text-decoration:none;">Al Mahdi</a></div>
   </header>
-  <main>
-    <section id="stats"></section>
-    <section id="scheduler"></section>
-    <section id="agents"></section>
-  </main>
+  <div class="main-card">
+    <h2>Dashboard</h2>
+    <p>Welcome! Here you’ll see your social automation stats, scheduled posts, and AI agent activity.</p>
+    <div class="section-row">
+      <div class="glass-section">
+        <strong>📈 Today’s Stats:</strong>
+        <ul>
+          <li>Followers gained: <b>+15</b></li>
+          <li>Posts scheduled: <b>3</b></li>
+          <li>Engagements: <b>89</b></li>
+        </ul>
+      </div>
+      <div class="glass-section">
+        <strong>🤖 AI Agent Activity:</strong>
+        <ul>
+          <li>Auto-replied to 5 comments</li>
+          <li>Suggested 2 new post ideas</li>
+        </ul>
+      </div>
+      <div class="glass-section">
+        <strong>🗓️ Upcoming Scheduled Posts:</strong>
+        <ul>
+          <li>Instagram: <i>Motivation Monday</i> - 9:00 AM</li>
+          <li>Twitter: <i>Growth Hack Tip</i> - 2:00 PM</li>
+        </ul>
+      </div>
+    </div>
+    <div class="log-out-row">
+      <a href="index.html" class="btn">Log Out</a>
+    </div>
+  </div>
   <div class="footer">
     &copy; 2025 Al Mahdi Social Automation Platform
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="supabaseClient.js"></script>
-  <script src="dashboard.js"></script>
 </body>
 </html>
