@@ -1,34 +1,26 @@
 // admin.js
-// Admin dashboard main logic for Al Mahdi platform connected to Supabase
+// Admin dashboard logic for Al Mahdi platform
 
-// Your Supabase project info (replace with your actual keys)
-const SUPABASE_URL = 'https://jaqjxmttwwcenndrsizq.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphcWp4bXR0d3djZW5uZHJzaXpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3NzU5MjgsImV4cCI6MjA2NTM1MTkyOH0.PjDBZk79fHnmMgKhtSTo_BtkwN9YeGsz9Sd1lZqhTwQ';
-
-// Initialize Supabase client
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// Elements from your HTML (adjust IDs accordingly)
+// HTML element selectors
 const usersTable = document.getElementById('users-table-body');
 const postsQueueTable = document.getElementById('posts-queue-body');
 const totalUsersSpan = document.getElementById('total-users');
 const totalPendingPostsSpan = document.getElementById('total-pending-posts');
 const logoutBtn = document.getElementById('logout-btn');
 
-// Fetch and render list of users with roles and tiers
+// Load users from Supabase
 async function loadUsers() {
-  const { data, error } = await supabase
+  const { data, error } = await window.supabase
     .from('users')
     .select('id, email, username, tier, role, created_at')
     .order('created_at', { ascending: false });
-  
+
   if (error) {
     console.error('Error loading users:', error.message);
     return;
   }
 
-  usersTable.innerHTML = ''; // clear existing rows
-
+  usersTable.innerHTML = '';
   data.forEach(user => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -45,9 +37,9 @@ async function loadUsers() {
   totalUsersSpan.textContent = data.length;
 }
 
-// Fetch and render posts/content pending approval
+// Load pending posts
 async function loadPendingPosts() {
-  const { data, error } = await supabase
+  const { data, error } = await window.supabase
     .from('posts')
     .select('id, title, user_id, status, created_at')
     .eq('status', 'pending')
@@ -59,7 +51,6 @@ async function loadPendingPosts() {
   }
 
   postsQueueTable.innerHTML = '';
-
   data.forEach(post => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -77,70 +68,63 @@ async function loadPendingPosts() {
 
   totalPendingPostsSpan.textContent = data.length;
 
-  // Attach event listeners for approve/reject
   document.querySelectorAll('.approve-btn').forEach(btn => {
-    btn.addEventListener('click', () => handlePostApproval(btn.dataset.id, true));
+    btn.addEventListener('click', () => updatePostStatus(btn.dataset.id, 'approved'));
   });
   document.querySelectorAll('.reject-btn').forEach(btn => {
-    btn.addEventListener('click', () => handlePostApproval(btn.dataset.id, false));
+    btn.addEventListener('click', () => updatePostStatus(btn.dataset.id, 'rejected'));
   });
 }
 
-// Approve or reject a post by updating its status
-async function handlePostApproval(postId, approve) {
-  const newStatus = approve ? 'approved' : 'rejected';
-  const { error } = await supabase
+// Approve/Reject post
+async function updatePostStatus(postId, status) {
+  const { error } = await window.supabase
     .from('posts')
-    .update({ status: newStatus })
+    .update({ status })
     .eq('id', postId);
 
   if (error) {
-    alert(`Failed to ${approve ? 'approve' : 'reject'} post: ${error.message}`);
+    alert(`Failed to update post: ${error.message}`);
     return;
   }
-  alert(`Post ${approve ? 'approved' : 'rejected'} successfully.`);
-  // Refresh the pending posts list
+
+  alert(`Post ${status} successfully.`);
   loadPendingPosts();
 }
 
-// Simple admin authentication check (optional, if using Supabase Auth)
+// Verify admin session
 async function checkAdminSession() {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await window.supabase.auth.getUser();
 
   if (!user) {
-    window.location.href = '/account/signin.html'; // redirect to login page
+    window.location.href = '/login.html';
     return;
   }
 
-  // Check user role, redirect if not admin
-  const { data, error } = await supabase
+  const { data, error } = await window.supabase
     .from('users')
     .select('role')
     .eq('id', user.id)
     .single();
 
   if (error || !data || data.role !== 'admin') {
-    alert('Access denied. You must be an admin to view this page.');
+    alert('Access denied. Admin only.');
     window.location.href = '/';
   }
 }
 
-// Logout admin
+// Logout
 async function logout() {
-  await supabase.auth.signOut();
-  window.location.href = '/account/signin.html';
+  await window.supabase.auth.signOut();
+  window.location.href = '/login.html';
 }
 
-// Initialize dashboard on load
+// Initialize
 async function initAdminDashboard() {
   await checkAdminSession();
   await loadUsers();
   await loadPendingPosts();
 }
 
-// Event listeners
 logoutBtn.addEventListener('click', logout);
-
-// Run the dashboard
 initAdminDashboard();
-
